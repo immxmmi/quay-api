@@ -1,0 +1,11 @@
+services:
+  quay-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quay-api
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python main.py
