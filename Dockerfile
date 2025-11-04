@@ -8,3 +8,5 @@ WORKDIR /app
 COPY --from=build /usr/local/lib/python3.12 /usr/local/lib/python3.12
 COPY ./src ./src
 CMD ["python", "src/main.py"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD curl -f http://localhost:8000/health/live || exit 1
