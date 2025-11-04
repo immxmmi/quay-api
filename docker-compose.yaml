@@ -6,6 +6,8 @@ services:
     container_name: quay-api
     volumes:
       - .:/app
+    ports:
+      - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
-    command: python main.py
+    command: python src/main.py

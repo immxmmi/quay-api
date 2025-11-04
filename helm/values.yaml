@@ -1,0 +1,25 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/momo/quay-api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+env:
+  API_BASE_URL: "https://quay.io/api/v1"
+envSecret:
+  name: quay-api-secret
+  create: true
+  token: "changeme"
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi

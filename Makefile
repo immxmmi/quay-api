@@ -10,9 +10,14 @@ TAG = latest
 build:
 	docker build -t $(IMAGE_NAME):$(TAG) .
 
+
 # Run the container
 run:
 	docker run --name $(CONTAINER_NAME) -d $(IMAGE_NAME):$(TAG)
+
+# Run the app locally using venv and Uvicorn
+run-local:
+	source venv/bin/activate && uvicorn src.main:app --host 0.0.0.0 --port 8000
 
 # Stop the running container
 stop:

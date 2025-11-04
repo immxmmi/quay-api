@@ -1,11 +1,11 @@
 from fastapi import FastAPI
-from health.endpoints import router as health_router
+import uvicorn
 
 app = FastAPI()
 
-# Health routes registrieren
-app.include_router(health_router, prefix="/health")
-
 @app.get("/")
-def root():
-    return {"message": "Welcome to Quay API"}
+def read_root():
+    return {"message": "Hello World"}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
