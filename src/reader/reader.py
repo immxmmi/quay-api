@@ -21,3 +21,5 @@ def read_yaml_live(path: Union[str, Path]) -> Dict[str, Any]:
     """Reads the YAML file fresh on every call for real-time updates."""
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+    
+    
