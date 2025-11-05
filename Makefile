@@ -11,6 +11,10 @@ build:
 	docker build -t $(IMAGE_NAME):$(TAG) .
 
 
+compose:
+	docker compose build --no-cache
+	docker compose up -d
+	
 # Run the container
 run:
 	docker run --name $(CONTAINER_NAME) -d $(IMAGE_NAME):$(TAG)
