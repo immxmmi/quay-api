@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YAML Diff Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: white;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #222;
+    }
+
+    h3 {
+      color: #333;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    .status-ok {
+      background-color: #d4edda;
+      color: #155724;
+      font-weight: bold;
+    }
+
+    .status-error {
+      background-color: #f8d7da;
+      color: #721c24;
+      font-weight: bold;
+    }
+
+    .status-info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>YAML Change Report</h1>
+  <h3>Status: {{ yaml_status }}</h3>
+  <p>{{ yaml_message }}</p>
+  <table>
+    <thead>
+      <tr><th>Key</th><th>Status</th><th>Old Value</th><th>New Value</th></tr>
+    </thead>
+    <tbody>
+      {{ diff_rows }}
+    </tbody>
+  </table>
+</body>
+</html>

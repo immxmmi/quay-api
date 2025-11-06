@@ -87,3 +87,27 @@ def check_yaml_change(
         return {"status": "changed", "message": "YAML updated", "diff": diffs}
 
     return {"status": "unchanged", "message": "No changes detected"}
+
+
+def view_yaml_diff_html(result: dict):
+    template_path = Path(__file__).parent / "templates" / "yaml_diff.html"
+    html = template_path.read_text(encoding="utf-8")
+
+    diff_rows = ""
+    for key, info in result.get("diff", {}).items():
+        status = info.get("status")
+        old_value = info.get("old_value", "-")
+        new_value = info.get("new_value", "-")
+        css_class = {
+            "added": "status-ok",
+            "removed": "status-error",
+            "modified": "status-info"
+        }.get(status, "")
+        diff_rows += f'<tr><td>{key}</td><td class="{css_class}">{status}</td><td>{old_value}</td><td>{new_value}</td></tr>\n'
+
+    html = (
+        html.replace("{{ yaml_status }}", result.get("status", ""))
+            .replace("{{ yaml_message }}", result.get("message", ""))
+            .replace("{{ diff_rows }}", diff_rows)
+    )
+    return html

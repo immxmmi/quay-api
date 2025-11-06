@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 import uvicorn
 from fastapi.responses import JSONResponse, HTMLResponse
+from reader.yaml_diff import view_yaml_diff_html
 from check.check import check, render_check_html
 from reader.yaml_reader import read_yaml_live
 from reader.yaml_diff import check_yaml_change
@@ -45,6 +46,10 @@ def get_yaml():
 
 
 
+@app.get("/yaml/check/html")
+def yaml_check_html():
+    result = check_yaml_change(YAML_STORAGE_PATH, YAML_FILE_PATH)
+    return HTMLResponse(content=view_yaml_diff_html(result))
 
 @app.get("/yaml/check")
 def yaml_check():
