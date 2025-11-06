@@ -8,7 +8,8 @@ import os
 
 app = FastAPI()
 
-@app.get("/check")
+
+@app.get("/")
 def run_check(request: Request):
     result = check()
     accept = request.headers.get("accept", "")

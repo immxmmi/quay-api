@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+  <meta charset="UTF-8">
+  <title>System & API Health Check</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: white;
+      text-align: center;
+    }
+
+    h1 {
+      color: #222;
+    }
+
+    h2 {
+      color: #333;
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+
+    p.description {
+      color: #666;
+      font-size: 14px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 60%;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    .status-ok {
+      background-color: #d4edda;
+      color: #155724;
+      font-weight: bold;
+    }
+
+    .status-missing {
+      background-color: #fff3cd;
+      color: #856404;
+      font-weight: bold;
+    }
+
+    .status-error {
+      background-color: #f8d7da;
+      color: #721c24;
+      font-weight: bold;
+    }
+
+    .status-info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      font-weight: bold;
+    }
+  </style>
+</head>
+</head>
+<body>
+  <h1>System & API Health Check</h1>
+
+  <h2>Environment Variables Check</h2>
+  <table>
+    <thead>
+      <tr><th>Variable</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      {{ env_rows }}
+    </tbody>
+  </table>
+
+  <h2>API Check</h2>
+  <table>
+    <thead>
+      <tr><th>Status</th><th>Reason</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="{{ api_class }}">{{ api_status }}</td>
+        <td>{{ api_reason }}</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
