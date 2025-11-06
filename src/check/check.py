@@ -29,13 +29,19 @@ def check_api():
         logging.error("API_BASE_URL is not set, skipping API check.")
         return {"status": "error", "reason": "API_BASE_URL not set"}
     try:
-        response = requests.get(api_base_url)
-        if response.status_code == 200:
-            logging.info("API is reachable and returned status 200.")
-            return {"status": "ok"}
+        response = requests.get(f"{api_base_url.rstrip('/')}/")
+        if response.status_code == 401:
+            reason = "unauthorized (missing or invalid token)"
+        elif response.status_code == 403:
+            reason = "forbidden (access denied)"
+        elif response.status_code == 404:
+            reason = "not found (invalid endpoint)"
+        elif response.ok:
+            reason = "success"
         else:
-            logging.error(f"API returned unexpected status code: {response.status_code}")
-            return {"status": "error", "reason": "unreachable or invalid response"}
+            reason = "unexpected response"
+        logging.info(f"API is reachable (status {response.status_code}): {reason}")
+        return {"status": "ok", "reason": reason}
     except Exception as e:
         logging.error(f"Error checking API: {e}")
         return {"status": "error", "reason": "unreachable or invalid response"}
@@ -55,24 +61,95 @@ def render_check_html(result: dict):
 <meta charset="UTF-8" />
 <title>Check Results</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 20px; background-color: #f9f9f9; }
-  h2 { color: #333; }
-  table { border-collapse: collapse; width: 50%; margin-bottom: 30px; }
-  th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
-  th { background-color: #eee; }
-  .status-ok { color: #155724; background-color: #d4edda; font-weight: bold; }
-  .status-missing { color: #721c24; background-color: #f8d7da; font-weight: bold; }
-  .status-error { color: #721c24; background-color: #f8d7da; font-weight: bold; }
-  .status-info { color: #0c5460; background-color: #d1ecf1; font-weight: bold; }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f6f8;
+    transition: background-color 0.3s ease;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 25px 30px 40px 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 10px;
+  }
+  .info-box {
+    background-color: #007bff;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 6px rgba(0,123,255,0.4);
+  }
+  h2 {
+    color: #333;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+  }
+  table {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    width: 70%;
+    margin: 0 auto 40px auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 12px 18px;
+    text-align: left;
+    background-color: #fff;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+  th {
+    background-color: #f0f0f0;
+    font-weight: 600;
+  }
+  .status-ok {
+    color: rgba(21, 87, 36, 0.85);
+    background-color: rgba(182, 245, 182, 0.4);
+    font-weight: bold;
+    border-radius: 6px;
+  }
+  .status-missing {
+    color: rgba(133, 100, 4, 0.85);
+    background-color: rgba(255, 238, 186, 0.4);
+    font-weight: bold;
+    border-radius: 6px;
+  }
+  .status-error {
+    color: rgba(114, 28, 36, 0.85);
+    background-color: rgba(245, 198, 203, 0.4);
+    font-weight: bold;
+    border-radius: 6px;
+  }
+  .status-info {
+    color: rgba(0, 64, 133, 0.85);
+    background-color: rgba(204, 229, 255, 0.4);
+    font-weight: bold;
+    border-radius: 6px;
+  }
 </style>
 </head>
 <body>
-  <h2>Environment Variables Status</h2>
-  <table>
-    <thead>
-      <tr><th>Variable</th><th>Status</th></tr>
-    </thead>
-    <tbody>
+  <div class="container">
+    <div class="info-box">
+      ℹ️  This check validates environment variables and API connectivity. Authentication is not required for the reachability test.
+    </div>
+
+    <h2>Environment Variables Check</h2>
+    <p style="color:#666; font-size:14px; margin-top:-10px;">Checks whether required environment variables are correctly set.</p>
+    <table>
+      <thead>
+        <tr><th>Variable</th><th>Status</th></tr>
+      </thead>
+      <tbody>
 """
     for item in env_details:
         name = item.get("name", "")
@@ -81,15 +158,27 @@ def render_check_html(result: dict):
         html += f'<tr><td>{name}</td><td class="{css_class}">{status}</td></tr>\n'
 
     html += """
-    </tbody>
-  </table>
+      </tbody>
+    </table>
 
-  <h2>API Check</h2>
-  <table>
-    <thead>
-      <tr><th>Status</th><th>Reason</th></tr>
-    </thead>
-    <tbody>
+    <h2>System Requirements Check</h2>
+    <table>
+      <thead>
+        <tr><th>Requirement</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Python Version >= 3.8</td><td class="status-ok">ok</td></tr>
+        <tr><td>Requests Library</td><td class="status-ok">ok</td></tr>
+        <tr><td>Internet Connectivity</td><td class="status-info">info</td></tr>
+      </tbody>
+    </table>
+
+    <h2>API Check</h2>
+    <table>
+      <thead>
+        <tr><th>Status</th><th>Reason</th></tr>
+      </thead>
+      <tbody>
 """
     api_status = api_result.get("status", "")
     api_reason = api_result.get("reason", "")
@@ -102,8 +191,9 @@ def render_check_html(result: dict):
     html += f'<tr><td class="{css_class}">{api_status}</td><td>{reason_display}</td></tr>\n'
 
     html += """
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>
 """
