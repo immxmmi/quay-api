@@ -1,0 +1,5 @@
+organizations:
+- email: contact@example.org
+  name: google-1
+- email: support@quayapi.dev
+  name: google-2

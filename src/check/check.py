@@ -6,17 +6,22 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO)
 
 def check_env():
-    required_env_vars = ["API_BASE_URL", "API_TOKEN"]
+    required_env_vars = ["API_BASE_URL", "API_TOKEN", "YAML_FILE_PATH", "YAML_STORAGE_PATH"]
+    secret_vars = ["API_TOKEN"]
     details = []
     missing_vars = []
+
     for var in required_env_vars:
-        if not os.getenv(var):
+        value = os.getenv(var)
+        if not value:
             logging.error(f"Environment variable {var} is missing.")
-            details.append({"name": var, "status": "missing"})
+            details.append({"name": var, "status": "missing", "value": None})
             missing_vars.append(var)
         else:
+            display_value = "*****" if var in secret_vars else value
             logging.info(f"Environment variable {var} is set.")
-            details.append({"name": var, "status": "ok"})
+            details.append({"name": var, "status": "ok", "value": display_value})
+
     summary_status = "error" if missing_vars else "ok"
     if missing_vars:
         logging.error(f"Missing environment variables: {missing_vars}")
@@ -60,8 +65,9 @@ def render_check_html(result: dict):
     for item in result.get("env", {}).get("details", []):
         name = item.get("name", "")
         status = item.get("status", "")
+        value = item.get("value", "")
         css_class = "status-ok" if status == "ok" else "status-missing"
-        env_rows += f'<tr><td>{name}</td><td class="{css_class}">{status}</td></tr>\n'
+        env_rows += f'<tr><td>{name}</td><td class="{css_class}">{status}</td><td>{value or "-"}</td></tr>\n'
 
     api_result = result.get("api", {})
     api_status = api_result.get("status", "")
