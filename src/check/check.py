@@ -65,86 +65,66 @@ def render_check_html(result: dict):
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f4f6f8;
-    transition: background-color 0.3s ease;
+    background-color: white;
+    text-align: center;
   }
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 25px 30px 40px 30px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    border-radius: 10px;
+  table {
+    border-collapse: collapse;
+    width: 60%;
+    margin: 20px auto;
+    border: 1px solid #ccc;
   }
-  .info-box {
-    background-color: #007bff;
-    color: white;
-    padding: 15px 20px;
-    border-radius: 6px;
-    font-size: 16px;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 6px rgba(0,123,255,0.4);
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  .status-ok {
+    background-color: #d4edda;
+    color: #155724;
+    font-weight: bold;
+  }
+  .status-missing {
+    background-color: #fff3cd;
+    color: #856404;
+    font-weight: bold;
+  }
+  .status-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    font-weight: bold;
+  }
+  .status-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    font-weight: bold;
   }
   h2 {
     color: #333;
-    border-bottom: 2px solid #ddd;
-    padding-bottom: 8px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+  }
+  p.description {
+    color: #666;
+    font-size: 14px;
+    margin-top: -10px;
     margin-bottom: 20px;
-  }
-  table {
-    border-collapse: separate;
-    border-spacing: 0 8px;
-    width: 70%;
-    margin: 0 auto 40px auto;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  th, td {
-    padding: 12px 18px;
-    text-align: left;
-    background-color: #fff;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-  }
-  th {
-    background-color: #f0f0f0;
-    font-weight: 600;
-  }
-  .status-ok {
-    color: rgba(21, 87, 36, 0.85);
-    background-color: rgba(182, 245, 182, 0.4);
-    font-weight: bold;
-    border-radius: 6px;
-  }
-  .status-missing {
-    color: rgba(133, 100, 4, 0.85);
-    background-color: rgba(255, 238, 186, 0.4);
-    font-weight: bold;
-    border-radius: 6px;
-  }
-  .status-error {
-    color: rgba(114, 28, 36, 0.85);
-    background-color: rgba(245, 198, 203, 0.4);
-    font-weight: bold;
-    border-radius: 6px;
-  }
-  .status-info {
-    color: rgba(0, 64, 133, 0.85);
-    background-color: rgba(204, 229, 255, 0.4);
-    font-weight: bold;
-    border-radius: 6px;
   }
 </style>
 </head>
 <body>
-  <div class="container">
-    <div class="info-box">
-      ℹ️  This check validates environment variables and API connectivity. Authentication is not required for the reachability test.
-    </div>
+
+  <h1 style="text-align:center; color:#222;">System & API Health Check</h1>
+  <p style="text-align:center; color:#666; font-size:14px; margin-top:-10px;">
+  Overview of environment, system, and API reachability.
+  </p>
 
     <h2>Environment Variables Check</h2>
-    <p style="color:#666; font-size:14px; margin-top:-10px;">Checks whether required environment variables are correctly set.</p>
+    <p class="description">Checks whether required environment variables are correctly set.</p>
     <table>
       <thead>
         <tr><th>Variable</th><th>Status</th></tr>
@@ -193,7 +173,7 @@ def render_check_html(result: dict):
     html += """
       </tbody>
     </table>
-  </div>
+
 </body>
 </html>
 """
