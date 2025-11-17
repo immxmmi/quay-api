@@ -23,7 +23,6 @@ if not YAML_STORAGE_PATH.exists():
 
 @app.get("/")
 def run_check(request: Request):
-    """Performs environment and API health checks."""
     result = check()
     accept = request.headers.get("accept", "")
     if "text/html" in accept:
@@ -32,7 +31,6 @@ def run_check(request: Request):
 
 @app.get("/yaml")
 def get_yaml():
-    """Reads and validates the configured YAML file."""
     if not YAML_FILE_PATH.exists():
         return JSONResponse(content={"status": "error", "message": f"File '{YAML_FILE_PATH}' does not exist"}, status_code=404)
     try:
