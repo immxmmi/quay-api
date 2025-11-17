@@ -13,10 +13,10 @@ from pathlib import Path
 app = FastAPI()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
-# YAML file path (must be a file)
-YAML_FILE_PATH = Path(os.getenv("YAML_FILE_PATH", Path(__file__).parent / "test.yaml"))
 
-# YAML storage path (must be a directory)
+YAML_FILE_PATH = Path(os.getenv("YAML_FILE_PATH", Path(__file__).parent / "yaml/test.yaml"))
+
+
 YAML_STORAGE_PATH = Path(os.getenv("YAML_STORAGE_PATH", "./storage"))
 if not YAML_STORAGE_PATH.exists():
     YAML_STORAGE_PATH.mkdir(parents=True, exist_ok=True)

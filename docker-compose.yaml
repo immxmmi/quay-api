@@ -5,11 +5,13 @@ services:
       dockerfile: Dockerfile
     container_name: quay-api
     volumes:
-      - .:/app
+      - ./data/yaml:/app/data/yaml
     ports:
       - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
+      - YAML_FILE_PATH=/app/data/yaml/test.yaml
+      - YAML_STORAGE_PATH=/app/data/yaml
     env_file:
       - .env
     command: python src/main.py
