@@ -21,7 +21,6 @@ class OrganizationService:
         logging.info("OrganizationService initialized successfully")
 
     def list_organizations(self):
-        """Fetches all organizations."""
         logging.info("Listing all organizations...")
         try:
             response = self.client.get("superuser/organizations/")
@@ -32,7 +31,6 @@ class OrganizationService:
             raise
 
     def create_organization(self, name: str, email: str):
-        """Creates a new organization with the given name and email."""
         logging.info(f"Creating organization '{name}' with email '{email}'...")
         data = {
             "name": name,
@@ -60,7 +58,6 @@ class OrganizationService:
             raise Exception(f"Failed to create organization '{name}': {error_message}")
 
     def get_organization(self, name: str):
-        """Fetches details of a specific organization by name."""
         logging.info(f"Fetching organization '{name}' details...")
         try:
             response = self.client.get(f"organization/{name}")
@@ -71,7 +68,6 @@ class OrganizationService:
             raise
 
     def delete_organization(self, name: str):
-        """Deletes an organization by name."""
         logging.info(f"Deleting organization '{name}'...")
         try:
             response = self.client.delete(f"organization/{name}")
@@ -82,7 +78,6 @@ class OrganizationService:
             raise
 
     def create_organizations_from_list(self, organizations: list[dict]):
-        """Creates multiple organizations from a provided list."""
         results = []
         for org in organizations:
             name = org.get("name")

@@ -6,7 +6,6 @@ from pathlib import Path
 
 
 def get_yaml_hash(source: Union[str, Path, Dict[str, Any]]) -> str:
-    """Get SHA256 hash from YAML file or data."""
     if isinstance(source, (str, Path)):
         with open(source, "rb") as f:
             content = f.read()
@@ -16,12 +15,10 @@ def get_yaml_hash(source: Union[str, Path, Dict[str, Any]]) -> str:
 
 
 def has_yaml_changed(new_hash: str, old_hash: str) -> bool:
-    """Return True if the YAML hash has changed."""
     return new_hash != old_hash
 
 
 def diff_yaml(old_data: Dict[str, Any], new_data: Dict[str, Any]) -> Dict[str, Any]:
-    """Compare two YAML structures and return their differences."""
     diffs = {}
     for key in new_data:
         if key not in old_data:
@@ -45,7 +42,6 @@ def load_yaml_data(file_path: Path) -> Dict[str, Any]:
 
 
 def load_old_snapshot(storage_dir: Path) -> Dict[str, Any]:
-    """Load previous YAML snapshot if it exists."""
     old_file = storage_dir / "last_yaml_snapshot.yaml"
     if old_file.exists():
         with open(old_file, "r", encoding="utf-8") as f:
@@ -54,7 +50,6 @@ def load_old_snapshot(storage_dir: Path) -> Dict[str, Any]:
 
 
 def save_snapshot_and_hash(new_data: Dict[str, Any], new_hash: str, storage_dir: Path):
-    """Save updated YAML snapshot and hash."""
     old_file = storage_dir / "last_yaml_snapshot.yaml"
     with open(old_file, "w", encoding="utf-8") as f:
         yaml.safe_dump(new_data, f)
@@ -66,13 +61,11 @@ def check_yaml_change(
     file_path: Optional[Path] = None,
     new_data: Optional[Dict[str, Any]] = None
 ) -> dict:
-    """Check YAML changes using a file path or in-memory data."""
     if not storage_dir:
         raise ValueError("storage_dir is required")
 
     old_hash = load_yaml_hash(storage_dir)
 
-    # Load new YAML if not provided
     if new_data is None:
         if not file_path:
             raise ValueError("Either file_path or new_data must be provided")

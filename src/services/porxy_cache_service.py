@@ -23,7 +23,6 @@ class ProxyCacheService:
                            upstream_registry: str = "docker.io",
                            upstream_registry_username: str = None,
                            upstream_registry_password: str = None):
-        """Creates a proxy cache configuration for the given organization."""
         logging.info(f"Creating proxy cache for organization '{org_name}'...")
         data = {
             "expiration_s": expiration_s,
@@ -42,7 +41,6 @@ class ProxyCacheService:
             raise
 
     def get_proxy_cache(self, org_name: str):
-        """Retrieves the proxy cache configuration for a specific organization."""
         logging.info(f"Fetching proxy cache for organization '{org_name}'...")
         try:
             response = self.client.get(f"organization/{org_name}/proxycache")
@@ -53,7 +51,6 @@ class ProxyCacheService:
             raise
 
     def delete_proxy_cache(self, org_name: str):
-        """Deletes the proxy cache configuration for a specific organization."""
         logging.info(f"Deleting proxy cache for organization '{org_name}'...")
         try:
             response = self.client.delete(f"organization/{org_name}/proxycache")

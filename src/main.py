@@ -44,8 +44,6 @@ def get_yaml():
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=400)
 
 
-
-
 @app.get("/yaml/check/html")
 def yaml_check_html():
     result = check_yaml_change(YAML_STORAGE_PATH, YAML_FILE_PATH)
