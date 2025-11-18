@@ -1,0 +1,64 @@
+input_file: "inputs.yaml"
+
+pipeline:
+  - name: validate-env
+    job: validate-env
+    enabled: true
+
+  - name: ensure-organization
+    job: ensure-organization
+    enabled: false
+    params:
+      organization: "{{ inputs.organization }}"
+
+  - name: ensure-namespace
+    job: ensure-namespace
+    enabled: false
+    params:
+      namespace: "{{ inputs.namespace }}"
+
+  - name: create-team
+    job: create-team
+    enabled: false
+    params:
+      team_name: "{{ inputs.team_name }}"
+      role: "admin"
+
+  - name: create-robot-account
+    job: create-robot-account
+    enabled: false
+    params:
+      robot_name: "{{ inputs.robot_name }}"
+      permissions: "{{ inputs.permissions }}"
+
+  - name: assign-team-permissions
+    job: assign-team-permissions
+    enabled: false
+    params:
+      team_name: "{{ inputs.team_name }}"
+      repository: "{{ inputs.repository }}"
+      permissions: "{{ inputs.permissions }}"
+
+  - name: create-repository
+    job: create-repository
+    enabled: false
+    params:
+      repository: "{{ inputs.repository }}"
+
+  - name: import-repository
+    job: import-repository
+    enabled: false
+    params:
+      source_url: "{{ inputs.source_url }}"
+      target_repo: "{{ inputs.repository }}"
+
+  - name: delete-tag
+    job: delete-tag
+    enabled: false
+    params:
+      repository: "{{ inputs.repository }}"
+      tag: "{{ inputs.tag }}"
+
+  - name: cleanup
+    job: cleanup
+    enabled: false

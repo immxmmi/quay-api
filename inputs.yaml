@@ -1,0 +1,15 @@
+organization: "my-org"
+namespace: "backend"
+repository: "sample-repo"
+team_name: "dev-team"
+robot_name: "ci-bot"
+
+permissions:
+  - read
+  - write
+
+source_url: ""
+tag: ""
+
+user: "momo"
+token: "YOUR_QUAY_API_TOKEN"
